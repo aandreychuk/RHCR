@@ -198,6 +198,17 @@ bool KivaGrid::load_unweighted_map(std::string fname)
     return true;
 }
 
+void KivaGrid::init_endpoints(std::vector<std::pair<int, int>> starts, std::vector<std::vector<std::pair<int, int>>> goals)
+{
+    agent_home_locations.clear();
+    endpoints.clear();
+    for(auto s: starts)
+        agent_home_locations.push_back(get_id(s.first, s.second));
+    for(const auto& g: goals)
+        for (auto s:g)
+            endpoints.push_back(get_id(s.first, s.second));
+}
+
 void KivaGrid::preprocessing(bool consider_rotation)
 {
 	std::cout << "*** PreProcessing map ***" << std::endl;
@@ -225,7 +236,7 @@ void KivaGrid::preprocessing(bool consider_rotation)
 		{
 			heuristics[home] = compute_heuristics(home);
 		}
-		save_heuristics_table(fname);
+		//save_heuristics_table(fname);
 	}
 
 	double runtime = (std::clock() - t) / CLOCKS_PER_SEC;

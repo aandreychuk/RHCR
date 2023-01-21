@@ -24,6 +24,7 @@ public:
     int get_rows() const { return rows; }
     int get_cols() const { return cols; }
     int size() const { return rows * cols; }
+    int get_id(int i, int j) const { return i*cols + j;}
 
     bool valid_move(int loc, int dir) const {return (weights[loc][dir] < WEIGHT_MAX - 1); }
     int get_Manhattan_distance(int loc1, int loc2) const;

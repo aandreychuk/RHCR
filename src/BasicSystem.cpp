@@ -512,6 +512,11 @@ void BasicSystem::save_results()
         output << std::endl;
     }
     output.close();
+
+    //stats
+    output.open("results.txt", std::ios::app);
+    output<<num_of_drives<<" "<<seed<<" "<<num_of_tasks<<"\n";
+    output.close();
     saving_time = (std::clock() - t) / CLOCKS_PER_SEC;
 	if (screen)
 		std::cout << "Done! (" << saving_time << " s)" << std::endl;

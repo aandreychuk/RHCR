@@ -2,6 +2,7 @@
 #include "SortingSystem.h"
 #include "OnlineSystem.h"
 #include "BeeSystem.h"
+#include "PredefinedKivaSystem.h"
 #include "ID.h"
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
@@ -97,8 +98,9 @@ int main(int argc, char** argv)
 	po::options_description desc("Allowed options");
 	desc.add_options()
 		("help", "produce help message")
-		("scenario", po::value<std::string>()->required(), "scenario (SORTING, KIVA, ONLINE, BEE)")
+        ("scenario", po::value<std::string>()->required(), "scenario (SORTING, KIVA, ONLINE, BEE, PreKIVA)")
 		("map,m", po::value<std::string>()->required(), "input map file")
+        ("instance", po::value<std::string>()->default_value("instances.json"), "json file with instances")
 		("task", po::value<std::string>()->default_value(""), "input task file")
 		("output,o", po::value<std::string>()->default_value("../exp/test"), "output folder name")
 		("agentNum,k", po::value<int>()->required(), "number of drives")
@@ -112,7 +114,7 @@ int main(int argc, char** argv)
 		("simulation_time", po::value<int>()->default_value(5000), "run simulation")
 		("simulation_window", po::value<int>()->default_value(5), "call the planner every simulation_window timesteps")
 		("travel_time_window", po::value<int>()->default_value(0), "consider the traffic jams within the given window")
-		("planning_window", po::value<int>()->default_value(INT_MAX / 2),
+		("planning_window", po::value<int>()->default_value(5),
 		        "the planner outputs plans with first planning_window timesteps collision-free")
 		("potential_function", po::value<string>()->default_value("NONE"), "potential function (NONE, SOC, IC)")
 		("potential_threshold", po::value<double>()->default_value(0), "potential threshold")
@@ -190,6 +192,21 @@ int main(int argc, char** argv)
 		system.simulate(vm["simulation_time"].as<int>());
 		return 0;
 	}
+    else if (vm["scenario"].as<string>() == "PreKIVA")
+    {
+        KivaGrid G;
+        if (!G.load_map(vm["map"].as<std::string>()))
+            return -1;
+        MAPFSolver* solver = set_solver(G, vm);
+        PredefinedKivaSystem system(G, *solver);
+        set_parameters(system, vm);
+        system.load_instance(vm["instance"].as<std::string>(), vm["map"].as<std::string>());;
+        G.init_endpoints(system.input_starts, system.input_all_goals);
+        G.preprocessing(system.consider_rotation);
+        system.simulate(vm["simulation_time"].as<int>());
+        //system.print_paths();
+        return 0;
+    }
 	else if (vm["scenario"].as<string>() == "SORTING")
 	{
 		 SortingGrid G;
