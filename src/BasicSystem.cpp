@@ -321,7 +321,7 @@ bool BasicSystem::congested() const
         if (t == simulation_window)
             wait_agents++;
     }
-    return wait_agents > num_of_drives / 2;  // more than half of drives didn't make progress
+    return wait_agents == num_of_drives;  // all drives didn't make progress
 }
 
 // move all agents from start_timestep to end_timestep
