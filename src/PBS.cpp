@@ -777,6 +777,7 @@ bool PBS::run(const vector<State>& starts,
 
 
 	runtime = (double)(std::clock() - start) / CLOCKS_PER_SEC;
+    total_runtime += runtime;
     get_solution();
 	if (solution_found && !validate_solution())
 	{

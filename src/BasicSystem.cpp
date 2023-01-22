@@ -515,7 +515,7 @@ void BasicSystem::save_results()
 
     //stats
     output.open("results.txt", std::ios::app);
-    output<<num_of_drives<<" "<<seed<<" "<<num_of_tasks<<"\n";
+    output<<num_of_drives<<" "<<seed<<" "<<num_of_tasks<<" "<<solver.total_runtime<<"\n";
     output.close();
     saving_time = (std::clock() - t) / CLOCKS_PER_SEC;
 	if (screen)
