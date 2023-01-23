@@ -228,12 +228,15 @@ void KivaGrid::preprocessing(bool consider_rotation)
 	}
 	if (!succ)
 	{
-		for (int id=0; id < rows*cols; id++)
+		for (auto endpoint : endpoints)
 		{
-            if(types[id] != "Obstacle")
-			    heuristics[id] = compute_heuristics(id);
+			heuristics[endpoint] = compute_heuristics(endpoint);
 		}
-		save_heuristics_table(fname);
+		for (auto home : agent_home_locations)
+		{
+			heuristics[home] = compute_heuristics(home);
+		}
+		//save_heuristics_table(fname);
 	}
 
 	double runtime = (std::clock() - t) / CLOCKS_PER_SEC;
