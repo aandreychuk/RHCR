@@ -478,7 +478,7 @@ void BasicSystem::save_results()
     output.close();
 
     // tasks
-    output.open(outfile + "\\tasks.txt", std::ios::out);
+    output.open("tasks.txt", std::ios::out);
     output << num_of_drives << std::endl;
     for (int k = 0; k < num_of_drives; k++)
     {
@@ -500,7 +500,7 @@ void BasicSystem::save_results()
     output.close();
 
     // paths
-    output.open(outfile + "\\paths.txt", std::ios::out);
+    output.open("paths.txt", std::ios::out);
     output << num_of_drives << std::endl;
     for (int k = 0; k < num_of_drives; k++)
     {
@@ -514,8 +514,8 @@ void BasicSystem::save_results()
     output.close();
 
     //stats
-    output.open("results.txt", std::ios::app);
-    output<<num_of_drives<<" "<<seed<<" "<<num_of_tasks<<" "<<solver.total_runtime<<"\n";
+    output.open("results_"+std::to_string(num_of_drives)+"_"+std::to_string(seed)+"_"+std::to_string(time_limit)+".txt", std::ios::app);
+    output<<num_of_drives<<" "<<seed<<" "<<time_limit<<" "<<simulation_window<<" "<<planning_window<<" "<<num_of_tasks<<" "<<solver.total_runtime<<"\n";
     output.close();
     saving_time = (std::clock() - t) / CLOCKS_PER_SEC;
 	if (screen)

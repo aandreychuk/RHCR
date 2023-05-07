@@ -208,7 +208,8 @@ void KivaSystem::simulate(int simulation_time)
 
 	for (; timestep < simulation_time; timestep += simulation_window)
 	{
-		std::cout << "Timestep " << timestep << std::endl;
+        if(solver.screen > 0)
+		    std::cout << "Timestep " << timestep << std::endl;
 
 		update_start_locations();
 		update_goal_locations();
@@ -216,7 +217,8 @@ void KivaSystem::simulate(int simulation_time)
 
 		// move drives
 		auto new_finished_tasks = move();
-		std::cout << new_finished_tasks.size() << " tasks has been finished" << std::endl;
+        if(solver.screen > 0)
+            std::cout << new_finished_tasks.size() << " tasks has been finished" << std::endl;
 
 		// update tasks
 		for (auto task : new_finished_tasks)
